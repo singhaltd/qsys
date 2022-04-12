@@ -1,0 +1,189 @@
+@layout('layouts/main')
+@set('title', 'Monitor')
+@section('body')
+<section style="height:100vh;width:100vw;background-image:url({{itBack.val}})">
+  <div class="w-100 position-absolute" style="z-index:19;margin-top:-15px;">
+    <div class="fs-6 mt-3 float-start rounded-pill p-2">
+      <img src="{{apLogo.val}}" alt="" srcset="" style="max-height:84px;height:100%;">
+    </div>
+    <div class="fs-6 float-end bg-white rounded-pill p-2">Counter</div>
+  </div>
+  <div class="d-flex" style="height:100%;width:100%;">
+    <div class="flex-fill align-self-center" style="max-width:60%;">
+      <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner" id="mAds">
+          @each((x,key) in itAds)
+          @!component('component/inCarousel',{event:key,type:x.type,file:x.file})
+          @endeach
+        </div>
+      </div>
+      <div class="boxq-number position-fixed">
+        <label style="padding-left:50px;" for="">Queue</label>
+        <h1 style="padding-left:50px;margin-top:-30px" class="text-ascolor" id="NQNUMBER">000</h1>
+      </div>
+    </div>
+    <div class="p-2 d-flex flex-fill">
+      <div class="align-self-center round-full"
+        style="width:520px;margin: 0 auto;background-color:rgba(255,255,255,.0);border-radius:20px;position:relative;">
+        <div class="w-100 position-absolute " style="z-index:19;margin-top:-15px;">
+          <div class="fs-6 float-start bg-white rounded-pill p-2" style="margin-left:22%; box-shadow:0 0px 6px #000;">
+            Ticket</div>
+          <div class="fs-6 float-end bg-white rounded-pill p-2" style="margin-right:22%; box-shadow:0 0px 6px #000;">
+            Counter</div>
+        </div>
+        @each (x in ['01','02','03','04','05','06','07'])
+        <div style="width:100%; height:100px;position: relative;" class="mt-2">
+          <div style="position: absolute;width: 100%;height: 100%;z-index: 9999; color: black; text-align: center;">
+            <div class="d-flex w-100 flex-row" style="height:100%;">
+              <div style="width:50%;line-height:100px;" id="mcTicket{{x}}" class="fs-1 fw-bolder text-ascolor1"></div>
+              <div style="width:50%;line-height:100px;" id="mcCounter{{x}}" class="fs-1 fw-bolder text-ascolor1">{{x}}</div>
+            </div>
+          </div>
+          <svg role="none" style="fill:white;opacity:0.7;border-radius: 25px; width:520px; height:100px;">
+            <defs>
+              <mask id="mask">
+                <rect width="100%" height="100%" fill="white" id="mycor" />
+                <circle cx="50%" cy="0%" r="8" fill="black"></circle>
+                <circle cx="50%" cy="100%" r="8" fill="black"></circle>
+              </mask>
+            </defs>
+            <rect width="100%" height="100%" mask="url(#mask)" />
+          </svg>
+        </div>
+        @endeach
+      </div>
+    </div>
+    {{-- <div>
+      @each(so in sound)
+      <audio controls id="LAN{{so.number}}">
+        <source src="sound/Laos/{{so.number}}.wav" type="audio/wav">
+        Your browser does not support the audio element.
+      </audio>
+      @endeach
+    </div> --}}
+    <!-- <button onclick="call(100,1)">CALL</button> -->
+
+</section>
+@section('scripts')
+<script>
+  
+  let elm = document.getElementById("mAds")
+  const socket = io()
+  let elMedia = "http://10.0.32.10/stbexchangerate/media/stbanckfinal.3fe71008.mp4"
+  let branch = "001"
+  socket.on('TakeCall'+branch, (data) => {
+    let elt = document.getElementById("mcTicket0"+data.counter)
+    call(data.qnumber, data.counter)
+    switch (data.type) {
+      case "CALL":
+        elt.innerHTML = data.qnumber.toString().padStart(3,'0')
+        document.getElementById('NQNUMBER').innerHTML = data.qnumber.toString().padStart(3,'0')
+        break;
+      case "RCALL":
+        elm.innerHTML = data.body;
+        break;
+      case "ADS":
+        break;
+
+    }
+  })
+
+  function getAds() {
+    let elMedia = `
+            
+          `;
+    return
+  }
+  function call(qnumber, counter) {
+    const paysound = []
+    const scounter = [18]
+    if (qnumber >= 100) {
+      paysound.push(new Audio("sound/Laos/18.wav"), new Audio("sound/Laos/" + qnumber.toString().substring(0, 1).padStart(2, '0') + ".wav"), new Audio("sound/Laos/13.wav"))
+    } else {
+      scounter.concat(paynum(qnumber)).forEach(i => {
+        paysound.push(new Audio("sound/Laos/" + (i.toString()).padStart(2, '0') + ".wav"))
+      })
+    }
+    paysound.push(new Audio("sound/Laos/22.wav"), new Audio("sound/Laos/" + (counter.toString()).padStart(2, '0') + ".wav"))
+    play_sound_queue(paysound);
+    console.log(paysound)
+  }
+  function paynum(i) {
+    console.log()
+    if (i.toString().length == 2) {
+      if (i >= 10 & i < 20) {
+        switch (i) {
+          case 10:
+            return [10];
+            break;
+          case 11:
+            return [10, 11];
+            break;
+          default:
+            return [10, i.toString().substring(2, 1)];
+            break;
+        }
+      }
+      if (i == 20) {
+        return [12]
+      }
+      if (i >= 21 & i < 30) {
+        if (i == 21) {
+          return [12, 11]
+        }
+        else {
+          return [12, i.toString().substring(2, 1)]
+        }
+      }
+      else if (parseInt(i.toString().substring(i.toString().length - 1)).toFixed(1) == 0.0) {
+        return [i.toString().substring(0, 1), 10]
+      }
+      else if (parseInt(i.toString().substring(i.toString().length - 1)).toFixed(1) == 1.0) {
+        return [i.toString().substring(0, 1), 10, 11]
+      }
+      else {
+        return [i.toString().substring(0, 1), 10, i.toString().substring(i.toString().length - 1)]
+      }
+    } else {
+      return [i.toString()]
+    }
+    return null;
+  }
+
+  function play(audio, callback) {
+    audio.play();
+    if (callback) {
+      //When the audio object completes it's playback, call the callback
+      //provided      
+      audio.addEventListener('ended', callback);
+    }
+  }
+
+  function play_sound_queue(sounds) {
+    var index = 0;
+    function recursive_play() {
+      //If the index is the last of the table, play the sound
+      //without running a callback after       
+      if (index + 1 === sounds.length) {
+        play(sounds[index], null);
+      } else {
+        //Else, play the sound, and when the playing is complete
+        //increment index by one and play the sound in the 
+        //indexth position of the array
+        play(sounds[index], function () {
+          index++;
+          recursive_play();
+        });
+      }
+    }
+
+    //Call the recursive_play for the first time
+    recursive_play();
+  }
+
+  function play_all() {
+    play_sound_queue([new Audio("sound/Laos/10.wav"), new Audio("sound/Laos/11.wav")]);
+  }
+</script>
+@end
+@end

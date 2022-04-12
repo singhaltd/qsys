@@ -1,0 +1,21 @@
+@layout('layouts/permis')
+@set('title', 'App Setting')
+
+@section('body')
+  <main>
+   
+    <form class="row g-3">
+      @each( x in itset)
+      <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">{{x.title}}</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{x.val}}">
+        </div>
+      </div>
+      @endeach
+    </form>
+  </main>
+  @section('scripts')
+        
+  @endsection
+@endsection

@@ -1,0 +1,65 @@
+@layout('layouts/main')
+@set('title', 'Home page')
+
+@section('body')
+  <section style="height:100vh;width:100vw;">
+    <div class="ekp" data-csrf-token="{{ csrfToken }}"></div>
+    
+    <div class="d-flex" style="height:100%;width:100%;">
+      {{--  <div class="flex-fill align-self-center">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://th.bing.com/th/id/OIP.2f9oSYssMDX9TLXAnLc3rQHaD2?pid=ImgDet&rs=1" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="https://th.bing.com/th/id/OIP.2f9oSYssMDX9TLXAnLc3rQHaD2?pid=ImgDet&rs=1" class="d-block w-100" alt="...">
+            </div>
+          </div>
+        </div>
+      </div>  --}}
+      <div class="p-2 d-flex flex-fill">
+        <div class="align-self-center p-5 round-full" style="width:80%;margin: 0 auto;background-color:rgba(255,255,255,.3);border-radius:20px;position:relative;">
+          <div class="position-absolute d-flex d-none" id="mloading" style="height:100%;width:100%;">
+            <div class="align-self-center" style="height:64px;width:200px;z-index:11; margin:0 auto;">
+              <img src="loading.gif" width="64" height="64"  />
+              <strong>ກຳລັງໂຫຼດ</strong>
+            </div>
+            <div class="position-absolute" style="background-color:rgba(255,255,255,.9);height:100%;width:100%;z-index:10;filter: blur(2px)"></div>
+          </div>
+          <h4 class="text-center">QSYS</h4>
+          <h4 class="text-center">ກາລຸນາເລືອກບໍລິການເພື່ອຮັບບັດຄິວ</h4>
+            <div class="list-group mt-4 list-rbgbor">
+              
+              @each (i in services)
+                <a href="#" class="list-group-item list-group-item-action" onclick="q('{{i.qcode}}')">{{i.title}}</a>
+              @endeach
+            </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  @section('scripts')
+    <script>
+      async function q(str){
+            let el = document.getElementById('mloading')
+            const tel = document.getElementsByClassName('epk')
+            el.classList.remove('d-none')
+            const body = {
+              service: str,
+              _csrf: tel.getAttribute('data-csrf-token')
+            }
+           const rs = await fetch('/queue',{
+              method:'POST',
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body)
+            }).then(response => response.json())
+            .then(result => {
+              alert(result.number)
+              el.classList.add('d-none')
+            })
+          }
+    </script>
+  @end
+@end

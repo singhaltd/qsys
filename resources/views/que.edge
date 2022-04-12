@@ -1,0 +1,31 @@
+@layout('layouts/main')
+@set('title', 'Home page')
+
+@section('body')
+  <section class="hero is-warning">
+    <table class="table">
+      <thead>
+        <th>
+          <td>ID</td>
+          <td>Date</td>
+          <td>Number</td>
+          <td>Service</td>
+          <td>Counter</td>
+          <td>Status</td>
+        </th>
+      </thead>
+      <tbody>
+        @each (i in txdata)
+        <tr>
+          <td>{{i.id}}</td>
+          <td>{{i.trn_dt}} {{i.trn_tm}}</td>
+          <td>{{i.counter}}</td>
+          <td>{{i.service}}</td>
+          <td>{{i.recall}}</td>
+          <td>{{i.status}}</td>
+        </tr>
+        @endeach
+      </tbody>
+    </table>
+  </section>
+@end

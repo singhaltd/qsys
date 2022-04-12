@@ -1,0 +1,37 @@
+@layout('layouts/permis')
+@set('title', 'App Setting')
+
+@section('body')
+  <section>
+    <table id="example" class="display table table-striped" style="width:100%">
+      <thead>
+          <tr>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody>
+        @each(x in itAds)
+          <tr>
+              <td>{{x.title}}</td>
+              <td>{{x.type}}</td>
+              <td>{{x.stat}}</td>
+          </tr>
+        @endeach
+      </tbody>
+  </table>
+  </section>
+  @section('scripts')
+        <script>
+          $(document).ready(function() {
+              $('#example').DataTable({
+                "lengthMenu": [[1, -1], [1, "ທັງໝົດ"]],
+                "language": {
+                    "url": "/i18n/laos.json"
+                }
+              });
+          } );
+        </script>
+  @endsection
+@endsection

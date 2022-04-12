@@ -1,0 +1,105 @@
+@layout('layouts/permis')
+@set('title', 'Branch')
+
+@section('body')
+  <main>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Create
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="{{route('pmis.createbranch')}}" method="post">
+            {{ csrfField() }}
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">ລະຫັດ</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="branch_code">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Branch Name</label>
+              <input class="form-control" name="description" id="exampleFormControlinput1" rows="3">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Status</label>
+              <select class="form-control" name="stat">
+                <option value="0">Close</option>
+                <option value="1">Open</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">ບັນທຶກ</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <table id="example" class="display table table-striped" style="width:100%">
+      <thead>
+          <tr>
+              <th style="max-width:100px!important;">Branch Code</th>
+              <th>Description</th>
+              <th>IP Address</th>
+              <th>Client Token</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody>
+        @each(x in lban)
+          <tr>
+              <td>{{x.branch_code}}</td>
+              <td>{{x.description}}</td>
+              <td></td>
+              <td></td>
+              <td>
+                <div class="float-start">
+                @if(x.stat == 1)
+                  <span class="rounded-pill bg-success text-white px-2">ເປີດ</span>
+                @else
+                  <span class="rounded-pill bg-danger text-white px-2">ປິດ</span>
+                @endif
+                </div>
+                <div class="float-end d-flex">
+                  <form action="{{ '/branch/'+ x.branch_code  }}" method="get">
+                    {{ csrfField() }}
+                    <button type="submit" class="btn btn-small btn-warning">
+                      <i class="btn-icon-only icon-edit"></i>										
+                    </button>
+                  </form>
+                  {{--  <form action="{{ '/branch/' + x.branch_code + ?_method=DELETE}}">  --}}
+                    <form action="{{ route('pmis.deleteBranch', [x.branch_code])}}" method="delete">
+                      {{ csrfField() }}
+                      <button type="submit" class="btn btn-small btn-danger">
+                        <i class="btn-icon-only icon-remove"></i>										
+                      </button>
+                    </form>
+                </div>
+               
+              </td>
+             
+          </tr>
+        @endeach
+      </tbody>
+  </table>
+  </main>
+  @section('scripts')
+        <script>
+          $(document).ready(function() {
+              $('#example').DataTable({
+                "lengthMenu": [[50, -1], [50, "ທັງໝົດ"]],
+                "language": {
+                    "url": "/i18n/laos.json"
+                }
+              });
+          } );
+        </script>
+  @endsection
+@endsection

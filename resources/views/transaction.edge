@@ -1,0 +1,98 @@
+@layout('layouts/permis')
+@set('title', 'Branch')
+
+@section('body')
+  <main>
+    <table id="example" class="display table table-striped" style="width:100%">
+      <thead>
+          <tr>
+              <th>Reference</th>
+              <th>Branch</th>
+              <th>Date & Time</th>
+              <th>Ticket Number</th>
+              <th>Service</th>
+              <th>Counter</th>
+              <th>Recall</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody>
+        @each(x in rsTxn)
+          <tr>
+              <td>{{x.id}}</td>
+              <td>{{x.branch}}</td>
+              <td>{{x.trn_dt + ' ' + x.trn_tm}}</td>
+              <td>{{x.qnumber}}</td>
+              <td>{{x.service}}</td>
+              <td>{{x.counter}}</td>
+              <td>
+                <div class="float-start">
+                @if(x.recall == 1)
+                  <span class="rounded-pill bg-success text-white px-2">true</span>
+                @else
+                  <span class="rounded-pill bg-danger text-white px-2">false</span>
+                @endif
+                </div>
+                {{--  <div class="float-end d-flex">
+                  <form action="{{ '/branch/'+ x.branch_code  }}" method="get">
+                    {{ csrfField() }}
+                    <button type="submit" class="btn btn-small btn-warning">
+                      <i class="btn-icon-only icon-edit"></i>										
+                    </button>
+                  </form>
+                  {{--  <form action="{{ '/branch/' + x.branch_code + ?_method=DELETE}}">  --}}
+                    <form action="{{ route('pmis.deleteBranch', [x.branch_code])}}" method="delete">
+                      {{ csrfField() }}
+                      <button type="submit" class="btn btn-small btn-danger">
+                        <i class="btn-icon-only icon-remove"></i>										
+                      </button>
+                    </form>
+                </div>  --}}
+               
+              </td>
+              <td>
+                <div class="float-start">
+                @if(x.status == 1)
+                  <span class="rounded-pill bg-warning text-white px-2">Waiting</span>
+                @elseif(x.status == 2)
+                  <span class="rounded-pill bg-success text-white px-2">Called</span>
+                @elseif(x.status == 3)
+                  <span class="rounded-pill bg-danger text-white px-2">Rejected</span>
+                @endif
+                </div>
+                {{--  <div class="float-end d-flex">
+                  <form action="{{ '/branch/'+ x.branch_code  }}" method="get">
+                    {{ csrfField() }}
+                    <button type="submit" class="btn btn-small btn-warning">
+                      <i class="btn-icon-only icon-edit"></i>										
+                    </button>
+                  </form>
+                  {{--  <form action="{{ '/branch/' + x.branch_code + ?_method=DELETE}}">  --}}
+                    <form action="{{ route('pmis.deleteBranch', [x.branch_code])}}" method="delete">
+                      {{ csrfField() }}
+                      <button type="submit" class="btn btn-small btn-danger">
+                        <i class="btn-icon-only icon-remove"></i>										
+                      </button>
+                    </form>
+                </div>  --}}
+               
+              </td>
+             
+          </tr>
+        @endeach
+      </tbody>
+  </table>
+  </main>
+  @section('scripts')
+        <script>
+          $(document).ready(function() {
+              $('#example').DataTable({
+                "lengthMenu": [[50, -1], [50, "ທັງໝົດ"]],
+                "language": {
+                    "url": "/i18n/laos.json"
+                }
+              });
+          } );
+        </script>
+  @endsection
+@endsection

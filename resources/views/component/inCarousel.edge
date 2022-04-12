@@ -1,0 +1,13 @@
+@if(event === 0)
+<div class="carousel-item active">
+    @if(type !== 'MDIA')
+     <img src="{{file}}" class="d-block w-100" alt="...">
+    @else
+     <video src="{{file}}" class="d-block w-100"  loop></video>
+    @endif
+</div>
+@else
+<div class="carousel-item">
+    <img src="{{file}}" class="d-block w-100" alt="...">
+</div>
+@endif

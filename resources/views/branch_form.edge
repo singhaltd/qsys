@@ -1,0 +1,36 @@
+@layout('layouts/permis')
+@set('title', 'Branch')
+
+@section('body')
+<main>
+  <form action="{{ route('pmis.updateBranch',{id:branch?.branch_code}) }}?_method=PUT" method="POST">
+    {{ csrfField() }}
+  <div class="form-floating">
+    <input type="text" name="branch_code" class="form-control" id="floatingInputValue" value="{{branch?.branch_code}}">
+    <label for="floatingInputValue">Branch Code</label>
+  </div>
+  <div class="form-floating mt-3">
+    <input type="text" name="description" class="form-control" id="floatingInputValue" value="{{branch?.description}}">
+    <label for="floatingInputValue">Name</label>
+  </div>
+  <hr />
+  <div class="form-floating">
+    <input type="text" name="client_ip" class="form-control" id="floatingInputValue" value="{{branch?.client_ip}}">
+    <label for="floatingInputValue">Client IP</label>
+  </div>
+  <div class="form-floating mt-3">
+    <input type="text" class="form-control " name="client_token" id="floatingInputValue" value="{{branch?.client_token}}" disabled>
+    <label for="floatingInputValue">Token</label>
+  </div>
+  <button class="btn btn-primary mt-3 float-end">GENERATE</button>
+
+
+  <button type="submit" class="btn btn-primary mt-3 float-end">Save</button>
+</form>
+</main>
+@section('scripts')
+<script>
+  
+</script>
+@endsection
+@endsection

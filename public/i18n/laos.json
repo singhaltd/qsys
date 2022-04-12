@@ -1,0 +1,17 @@
+{
+	"sProcessing":   "ກຳລັງດຳເນີນ...",
+	"sLengthMenu":   "ສະແດງ _MENU_ ລາຍການ",
+	"sZeroRecords":  "ບໍ່ພົບຂໍ້ມູນ",
+	"sInfo":         "ສະແດງ _START_ ເຖິງ _END_ ຈາກ _TOTAL_ ລາຍການ",
+	"sInfoEmpty":    "ສະແດງ 0 ເຖິງ 0 ຈາກ 0 ລາຍການ",
+	"sInfoFiltered": "(ກັ່ນຕອງ _MAX_ ທຸກລາຍການ)",
+	"sInfoPostFix":  "",
+	"sSearch":       "ຄົ້ນຫາ:",
+	"sUrl":          "",
+	"oPaginate": {
+		"sFirst":    "ເລີ່ມຕົ້ນ",
+		"sPrevious": "ກ່ອນໜ້າ",
+		"sNext":     "ຕໍ່ໄປ",
+		"sLast":     "ສຸດທ້າຍ"
+	}
+}

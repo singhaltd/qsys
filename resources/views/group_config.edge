@@ -1,0 +1,83 @@
+@layout('layouts/permis')
+@set('title', 'App Setting')
+
+@section('body')
+  <main>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="{{route('pmis.createService')}}" method="post">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">ລະຫັດ</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="qcode">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">ຄຳອະທິບາຍ</label>
+              <textarea class="form-control" name="title" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">ສາຂາ</label>
+              <select class="form-control" name="branch">
+                <option value="001">001</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">ບັນທຶກ</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <table id="example" class="display table table-striped" style="width:100%">
+      <thead>
+          <tr>
+              <th>Servie Code</th>
+              <th>Description</th>
+              <th>Role</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody>
+        @each(x in itserve)
+          <tr>
+              <td>{{x.qcode}}</td>
+              <td>{{x.title}}</td>
+              <td>{{x.title}}</td>
+              <td>
+                <form action="{{ route('pmis.upservices', [x.qcode])}}" method="get">
+                  {{ csrfField() }}
+                  <button type="submit" class="btn btn-small btn-warning">
+                    <i class="btn-icon-only icon-remove"></i>										
+                  </button>
+                </form>
+              </td>
+          </tr>
+        @endeach
+      </tbody>
+  </table>
+  </main>
+  @section('scripts')
+        <script>
+          $(document).ready(function() {
+              $('#example').DataTable({
+                "lengthMenu": [[50, -1], [50, "ທັງໝົດ"]],
+                "language": {
+                    "url": "/i18n/laos.json"
+                }
+              });
+          } );
+        </script>
+  @endsection
+@endsection
